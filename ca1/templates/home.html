@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load leaflet_tags %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <html>
+<head>
+	<meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+        <a class="navbar-brand" href="#">Dans Maps</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{% url 'logout' %}">Log Out</a></li>
+        <li><a href="{% url 'password_reset' %}">Reset Password</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid text-center">
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+      <p><button onclick="dublin()">Dublin</button></p>
+    </div>
+    <div class="col-sm-8 text-left">
+      <div id="map" style="width: 705px; height: 375px"></div>
+    </div>
+  </div>
+</div>
+
+
+</header>
+    <!-- Our web map and content will go here -->
+
+    <script>
+        // Create variable to hold map element, give initial settings to map
+        var map = L.map('map',{ center: [33.311150, 44.370798], zoom: 14});
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+        var myArea = L.polygon([[33.312250, 44.370110], [33.318150, 44.371200],
+        [33.311150, 44.379600], [33.311750, 44.374798]],
+        {color: 'blue', weight: 4}).addTo(map);
+
+        function dublin(){
+            var map = L.map('map',{ center: [53.3498, 6.2603], zoom: 14});
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+        }
+
+    </script>
+</body>
+</html>
+
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}
+
+
